@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>뽕수</title>
+<meta name="description" content="뽕수 유튜브 · 치지직 · 인스타그램 · 메일">
+<meta property="og:title" content="뽕수">
+<meta property="og:description" content="뽕수 유튜브 · 치지직 · 인스타그램 · 메일">
+<meta property="og:image" content="img/og.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#05060c">
+<link rel="icon" href="img/glow_bbongsu.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}
+
+/* Layout: one screen of deep space. 뽕수 floats at the center; link stones drift freely across the whole screen and bounce off the edges, each other and 뽕수. Single dark look by choice. */
+:root{
+  --space:#05060c;
+  --ink:#f3f1ea;
+  --ink-dim:#a9acc0;
+  --stone:#bdbdbd;
+  --glow:rgba(190,205,255,.55);
+  --panel:#14161f;
+  --line:#000;
+  --rim:#dfe4ff;
+  --outline:drop-shadow(0 0 2px rgba(225,232,255,.95)) drop-shadow(0 0 7px rgba(170,190,255,.7)) drop-shadow(0 0 18px rgba(130,150,255,.45));
+  --display:"Jua","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --hero:clamp(150px,34vmin,330px);
+  --rock:clamp(92px,19vmin,180px);
+  color-scheme:dark;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{
+  margin:0;background:var(--space);color:var(--ink);font-family:var(--display);
+  overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.sky{position:fixed;inset:-6%;background:var(--space) url("img/stars.webp") center/cover no-repeat;animation:pan 110s ease-in-out infinite alternate;z-index:0}
+@keyframes pan{from{transform:translate3d(2.5%,1.5%,0)}to{transform:translate3d(-2.5%,-1.5%,0)}}
+#starfield{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.shoot{position:fixed;z-index:1;width:140px;height:2px;border-radius:2px;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);opacity:0;animation:shoot 1.1s ease-out forwards}
+@keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(var(--r))}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}}
+.twinkles{position:fixed;inset:0;z-index:0;pointer-events:none}
+.tint{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(52,62,130,.5),rgba(20,24,60,.25) 55%,transparent 80%)}
+.tw{position:absolute;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,255,255,.6);opacity:.2;animation:tw 4s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:1}}
+
+.hero{position:fixed;left:50%;top:50%;width:var(--hero);transform:translate(-50%,-50%);z-index:2;text-align:center;border:0;background:none;padding:0;cursor:pointer;color:inherit;font:inherit}
+.hero img{display:block}
+.hero.hop img{animation:hop .6s cubic-bezier(.3,1.6,.5,1)}
+.hb{display:block;transform-origin:45% 60%;will-change:transform}
+.hero.hit .hb{animation:knock .26s linear}
+.hero:focus-visible{outline:3px dashed var(--ink);outline-offset:8px;border-radius:24px}
+@keyframes hop{0%{transform:translateY(0)}40%{transform:translateY(-14%) rotate(-6deg)}100%{transform:translateY(0)}}
+
+.field{position:fixed;inset:0;z-index:3;pointer-events:none}
+.stone{position:absolute;left:0;top:0;width:var(--rock);pointer-events:auto;border:0;background:none;padding:0;cursor:pointer;will-change:transform;-webkit-tap-highlight-color:transparent}
+.stone img{display:block;transition:filter .25s,scale .25s}
+.stone:hover img,.stone:focus-visible img{filter:brightness(1.15);scale:1.1}
+.stone:focus-visible{outline:none}
+.stone.hit img{animation:knock .22s linear}
+@keyframes knock{0%{translate:0 0}20%{translate:3px -2px}40%{translate:-3px 2px}60%{translate:2px 1px}80%{translate:-1px -1px}100%{translate:0 0}}
+.spark{position:fixed;left:0;top:0;width:0;height:0;z-index:4;pointer-events:none}
+.spark .chip{position:absolute;left:-4px;top:-4px;width:var(--s);height:var(--s);background:#a7a7a7;border:2px solid #000;border-radius:2px 5px 1px 4px;animation:chip .55s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes chip{0%{opacity:1;transform:translate(0,0) rotate(0)}70%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rt))}}
+.spark .dust{position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle,rgba(220,220,230,.55),rgba(220,220,230,0) 70%);animation:dust .5s ease-out forwards}
+@keyframes dust{0%{opacity:1;transform:scale(.4)}100%{opacity:0;transform:scale(2.2)}}
+.stone:focus-visible img{outline:3px dashed var(--ink);outline-offset:6px;border-radius:30%}
+
+.mailbox{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:5;background:var(--panel);border:4px solid var(--line);border-radius:22px;padding:14px 18px;display:flex;gap:12px;align-items:center;box-shadow:0 0 0 2px rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.6);max-width:calc(100% - 32px)}
+.mailbox span{user-select:all;font-size:clamp(13px,3.9vw,16px);white-space:nowrap}
+@media (max-width:420px){.mailbox{padding:10px 12px;gap:8px;border-width:3px}.mailbox button{font-size:14px;padding:5px 10px}}
+.mailbox button{white-space:nowrap;flex:none;font:inherit;font-size:15px;background:var(--stone);color:#000;border:3px solid #000;border-radius:12px;padding:6px 12px;cursor:pointer}
+.mailbox button:focus-visible{outline:3px dashed var(--ink);outline-offset:3px}
+
+@media (prefers-reduced-motion:reduce){
+  .sky,.tw{animation:none}
+  .shoot{display:none}
+}
+</style>
+</head>
+<body>
+
+
+<div class="sky" aria-hidden="true"></div>
+<div class="tint" aria-hidden="true"></div>
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="twinkles" id="tw" aria-hidden="true"></div>
+
+<button class="hero" id="hero" type="button" aria-label="뽕수">
+  <span class="hb"><img src="img/glow_bbongsu.png" alt="새싹 달린 돌멩이 캐릭터 뽕수" style="width:119.048%;max-width:none;margin:-9.524%"></span>
+</button>
+
+<div id="safe" aria-hidden="true" style="position:fixed;top:env(safe-area-inset-top,0px);bottom:env(safe-area-inset-bottom,0px);left:env(safe-area-inset-left,0px);right:env(safe-area-inset-right,0px);pointer-events:none;visibility:hidden"></div>
+<div class="field" id="field">
+  <a class="stone" href="https://www.youtube.com/@%EB%BD%95%EC%88%98%EB%BD%95%EC%88%98" target="_blank" rel="noopener" aria-label="유튜브"><img src="img/glow_youtube.png" alt="" style="width:123.256%;max-width:none;margin:-11.628%"></a>
+  <a class="stone" href="https://chzzk.naver.com/4960e782c663d66119861f2401c7ae80" target="_blank" rel="noopener" aria-label="치지직"><img src="img/glow_chzzk.png" alt="" style="width:123.324%;max-width:none;margin:-11.662%"></a>
+  <a class="stone" href="https://www.instagram.com/bbongbbongsu/" target="_blank" rel="noopener" aria-label="인스타그램"><img src="img/glow_instagram.png" alt="" style="width:124.169%;max-width:none;margin:-12.085%"></a>
+  <button class="stone" id="mailStone" type="button" aria-label="메일" aria-controls="mailbox"><img src="img/glow_mail.png" alt="" style="width:123.324%;max-width:none;margin:-11.662%"></button>
+</div>
+
+<div class="mailbox" id="mailbox" hidden>
+  <span id="mailAddr">bbongsubusiness@gmail.com</span>
+  <button type="button" id="copyBtn">복사</button>
+</div>
+
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // drifting star layers: near stars slide faster than far ones, so it feels like slowly floating through space
+  (function(){
+    var c=document.getElementById('starfield'),g=c.getContext('2d'),dpr=Math.min(2,devicePixelRatio||1),SW,SH,stars=[];
+    function size(){SW=innerWidth;SH=innerHeight;c.width=SW*dpr;c.height=SH*dpr;g.setTransform(dpr,0,0,dpr,0,0);
+      stars=[];var n=Math.round(SW*SH/9000);
+      for(var i=0;i<n;i++){var z=Math.random();stars.push({x:Math.random()*SW,y:Math.random()*SH,z:z,r:.4+z*1.4,a:.25+z*.6,tw:Math.random()*6.28})}}
+    size();addEventListener('resize',size);
+    var lt=performance.now();
+    function frame(now){var dt=Math.min(.05,(now-lt)/1000);lt=now;g.clearRect(0,0,SW,SH);
+      for(var i=0;i<stars.length;i++){var s=stars[i],v=4+s.z*14;
+        if(!reduce){s.x-=v*dt;s.y+=v*.35*dt;if(s.x<-3){s.x=SW+3;s.y=Math.random()*SH}if(s.y>SH+3){s.y=-3;s.x=Math.random()*SW}}
+        var al=s.a*(.75+.25*Math.sin(now/700+s.tw));g.globalAlpha=al;g.fillStyle='#fff';g.beginPath();g.arc(s.x,s.y,s.r,0,6.283);g.fill()}
+      g.globalAlpha=1;if(!reduce)requestAnimationFrame(frame)}
+    requestAnimationFrame(frame);
+  })();
+
+  // twinkling stars over the photo
+  var tw=document.getElementById('tw'), n=Math.round(Math.min(60,innerWidth*innerHeight/22000));
+  for(var i=0;i<n;i++){var s=document.createElement('i');s.className='tw';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=(-Math.random()*4)+'s';s.style.animationDuration=(3+Math.random()*4)+'s';var z=1+Math.random()*2.5;s.style.width=s.style.height=z+'px';tw.appendChild(s)}
+
+  // 뽕수 hops when tapped
+  var hero=document.getElementById('hero');
+  hero.addEventListener('click',function(){hero.classList.remove('hop');void hero.offsetWidth;hero.classList.add('hop')});
+  hero.addEventListener('animationend',function(e){if(e.animationName==='hop')hero.classList.remove('hop')});
+
+  // free-floating stones: drift, sway a little, bounce off edges, each other and 뽕수
+  var els=[].slice.call(document.querySelectorAll('.stone'));
+  var W,H,R,HR,cx,cy,X0=0,X1=0,Y0=0,Y1=0, rocks=[];
+  function measure(){
+    // usable area: inside the safe-area insets and the part of the screen actually visible (phone toolbars)
+    var sr=document.getElementById('safe').getBoundingClientRect(), vv=window.visualViewport;
+    X0=sr.left;X1=sr.right;Y0=sr.top;Y1=sr.bottom;
+    if(vv){X0=Math.max(X0,vv.offsetLeft);X1=Math.min(X1,vv.offsetLeft+vv.width);Y0=Math.max(Y0,vv.offsetTop);Y1=Math.min(Y1,vv.offsetTop+vv.height)}
+    W=X1-X0;H=Y1-Y0;
+    hero.style.left=(X0+W/2)+'px';hero.style.top=(Y0+H/2)+'px';
+    var gap=Math.max(0,innerHeight-Y1);
+    document.getElementById('mailbox').style.bottom=(gap+24)+'px';
+    R=els[0].offsetWidth/2;
+    // sizes come from the known drawing proportions, so they are right even before the images finish loading (phones)
+    var AR={'유튜브':305/344,'치지직':312/343,'인스타그램':313/331,'메일':316/343};
+    rocks&&rocks.forEach(function(r){r.hw=r.el.offsetWidth/2;r.hh=r.hw*(AR[r.el.getAttribute('aria-label')]||.9);r.rr=r.hw*0.94});
+    // 뽕수's round body (measured from the drawing), not the whole image box with its sprout and arms
+    var hb=hero.getBoundingClientRect(),hh=hb.width*263/273,ht=hb.top+hb.height/2-hh/2; HR=hb.width*0.42; cx=hb.left+hb.width*0.447; cy=ht+hh*0.557;
+  }
+  measure();
+  var corners=[[.18,.2],[.82,.18],[.82,.8],[.18,.82]];
+  els.forEach(function(el,i){
+    var a=Math.random()*Math.PI*2, sp=28+Math.random()*26;
+    rocks.push({el:el,x:X0+corners[i%4][0]*W,y:Y0+corners[i%4][1]*H,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,
+      ph:Math.random()*6.28, sw:5+Math.random()*4, rs:.5+Math.random()*.6});
+  });
+  measure();
+  function draw(r,t){
+    r.kick=(r.kick||0)*0.92;
+    var rot=Math.sin(t*r.rs+r.ph)*r.sw+r.kick;
+    r.el.style.transform='translate('+(r.x-r.hw)+'px,'+(r.y-r.hh)+'px) rotate('+rot.toFixed(2)+'deg)';
+  }
+  function bounce(a,bx,by,dist,bRock){
+    var dx=a.x-bx, dy=a.y-by, d=Math.hypot(dx,dy)||1;
+    if(d>=dist)return;
+    var nx=dx/d, ny=dy/d, push=dist-d;
+    if(bRock){
+      a.x+=nx*push/2;a.y+=ny*push/2;bRock.x-=nx*push/2;bRock.y-=ny*push/2;
+      var rel=(a.vx-bRock.vx)*nx+(a.vy-bRock.vy)*ny;
+      if(rel<0){a.vx-=rel*nx;a.vy-=rel*ny;bRock.vx+=rel*nx;bRock.vy+=rel*ny;clash(a,bRock,bx+nx*dist/2,by+ny*dist/2,-rel)}
+    }else{
+      a.x+=nx*push;a.y+=ny*push;
+      var v=a.vx*nx+a.vy*ny; if(v<0){a.vx-=2*v*nx;a.vy-=2*v*ny;bonk(a,bx+nx*(dist-a.rr),by+ny*(dist-a.rr),-v)}
+    }
+  }
+  // collision sound: synthesized stone "clack" samples played through <audio> elements
+  function wavURL(d,sr){
+    var n=d.length,b=new ArrayBuffer(44+n*2),v=new DataView(b);
+    function w(o,str){for(var i=0;i<str.length;i++)v.setUint8(o+i,str.charCodeAt(i))}
+    w(0,'RIFF');v.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);
+    v.setUint32(24,sr,true);v.setUint32(28,sr*2,true);v.setUint16(32,2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*2,true);
+    for(var i=0;i<n;i++)v.setInt16(44+i*2,Math.max(-1,Math.min(1,d[i]))*32767,true);
+    return URL.createObjectURL(new Blob([b],{type:'audio/wav'}));
+  }
+  function clack(big){
+    var sr=44100,n=Math.floor(sr*(big?.32:.22)),d=new Float32Array(n),j=function(a){return 1+(Math.random()*2-1)*a};
+    var f0=(big?950:2000)*j(.15),ratios=[1,1.59,2.33,3.21,4.11],amps=[1,.7,.5,.34,.22],dec=[.05,.038,.03,.022,.016],ph=ratios.map(function(){return Math.random()*6.28});
+    var thudF=(big?150:330)*j(.1),thudA=big?.9:.35,thudD=big?.06:.02,prev=0;
+    for(var i=0;i<n;i++){
+      var t=i/sr,x=0;
+      for(var k=0;k<5;k++)x+=amps[k]*Math.exp(-t/(dec[k]*(big?1.5:1)*j(.2)))*Math.sin(2*Math.PI*f0*ratios[k]*t+ph[k]);
+      x+=thudA*Math.exp(-t/thudD)*Math.sin(2*Math.PI*thudF*t);
+      var nz=Math.random()*2-1,hp=nz-prev;prev=nz;x+=1.3*hp*Math.exp(-t/.0016);
+      d[i]=x;
+    }
+    var pk=0;for(i=0;i<n;i++)pk=Math.max(pk,Math.abs(d[i]));for(i=0;i<n;i++)d[i]*=.92/pk;
+    return wavURL(d,sr);
+  }
+  var bank={small:[],big:[]},unlocked=false;
+  function addVariant(kind,url){var pair=[new Audio(url),new Audio(url)];pair.forEach(function(a){a.preload='auto'});bank[kind].push(pair)}
+
+  function unlock(){
+    if(unlocked)return;unlocked=true;
+    ['small','big'].forEach(function(k){bank[k].forEach(function(pair){pair.forEach(function(a){
+      a.muted=true;var pr=a.play();if(pr&&pr.then)pr.then(function(){a.pause();a.currentTime=0;a.muted=false},function(){a.muted=false});else{a.pause();a.muted=false}
+    })})});
+  }
+
+  function tok(power,big){
+    return; // sound effects turned off
+    var list=bank[big?'big':'small'],pair=list[Math.floor(Math.random()*list.length)],a=pair[0].paused?pair[0]:pair[1];
+    try{a.volume=Math.min(1,.45+power/90);a.currentTime=0;var pr=a.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
+  }
+  function squash(el){el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
+  function spark(x,y){
+    var s=document.createElement('div');s.className='spark';s.style.transform='translate('+x+'px,'+y+'px)';
+    var d=document.createElement('i');d.className='dust';s.appendChild(d);
+    for(var k=0;k<5;k++){var c=document.createElement('i');c.className='chip';
+      var a=Math.random()*Math.PI*2, dist=18+Math.random()*26;
+      c.style.setProperty('--s',(4+Math.random()*5).toFixed(1)+'px');
+      c.style.setProperty('--dx',(Math.cos(a)*dist).toFixed(1)+'px');c.style.setProperty('--dy',(Math.sin(a)*dist+10).toFixed(1)+'px');
+      c.style.setProperty('--rt',(Math.random()*360-180).toFixed(0)+'deg');s.appendChild(c)}
+    document.body.appendChild(s);setTimeout(function(){s.remove()},600);
+  }
+  function clash(a,b,x,y,power){
+    var now=performance.now(); if(now-(a.lastHit||0)<180&&now-(b.lastHit||0)<180)return;
+    a.lastHit=b.lastHit=now; squash(a.el);squash(b.el);spark(x,y);tok(power);
+    var k=Math.min(14,4+power/6); a.kick=(a.kick||0)+(Math.random()<.5?k:-k); b.kick=(b.kick||0)+(Math.random()<.5?k:-k);
+  }
+  els.forEach(function(el){el.addEventListener('animationend',function(){el.classList.remove('hit')})});
+  var hx=0,hy=0,hvx=0,hvy=0,hrot=0,hvr=0,hbEl=hero.querySelector('.hb');
+  function bonk(a,x,y,power){
+    var now=performance.now(); if(now-(a.lastHero||0)<250)return; a.lastHero=now;
+    var dx=cx-a.x,dy=cy-a.y,dd=Math.hypot(dx,dy)||1; hvx+=dx/dd*power*.9; hvy+=dy/dd*power*.9; hvr+=(Math.random()<.5?1:-1)*(10+power/3);
+    squash(a.el);squash(hero);spark(x,y);tok(power,true);
+    var k=Math.min(14,4+power/6); a.kick=(a.kick||0)+(Math.random()<.5?k:-k);
+  }
+  hero.addEventListener('animationend',function(e){if(e.animationName==='knock')hero.classList.remove('hit')});
+  // shooting stars now and then
+  function shootStar(){
+    if(!reduce&&!document.hidden){
+      var el=document.createElement('i');el.className='shoot';
+      var fromLeft=Math.random()<.5, ang=(18+Math.random()*22)*(fromLeft?1:-1);
+      el.style.left=(fromLeft?Math.random()*50:50+Math.random()*50)+'%';el.style.top=Math.random()*40+'%';
+      el.style.setProperty('--r',(fromLeft?ang:180+ang)+'deg');
+      var dist=300+Math.random()*300, rad=ang*Math.PI/180;
+      el.style.setProperty('--dx',(fromLeft?1:-1)*Math.cos(rad)*dist+'px');el.style.setProperty('--dy',Math.abs(Math.sin(rad))*dist+'px');
+      document.body.appendChild(el);setTimeout(function(){el.remove()},1200);
+    }
+    setTimeout(shootStar,5000+Math.random()*7000);
+  }
+  setTimeout(shootStar,2500);
+
+  // stones are wider than tall: use an ellipse fitted to the drawn body, so they bounce when the outlines actually touch
+  function radAt(r,dx,dy){var d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d,a=r.hw*.93,b=r.hh*.93;return a*b/Math.sqrt(b*b*ux*ux+a*a*uy*uy)}
+  var last=performance.now(),hcx=cx,hcy=cy;
+  function step(now){
+    var dt=Math.min(.05,(now-last)/1000); last=now; var t=now/1000;
+    rocks.forEach(function(r){
+      r.x+=r.vx*dt; r.y+=r.vy*dt;
+      if(r.x<X0+r.hw){r.x=X0+r.hw;r.vx=Math.abs(r.vx)} if(r.x>X1-r.hw){r.x=X1-r.hw;r.vx=-Math.abs(r.vx)}
+      if(r.y<Y0+r.hh){r.y=Y0+r.hh;r.vy=Math.abs(r.vy)} if(r.y>Y1-r.hh){r.y=Y1-r.hh;r.vy=-Math.abs(r.vy)}
+      bounce(r,hcx,hcy,HR+radAt(r,r.x-hcx,r.y-hcy)+1,null);
+    });
+    // 뽕수 drifts on several slow, unrelated waves plus a springy push when hit
+    hvx+=-hx*6*dt;hvy+=-hy*6*dt;hvr+=-hrot*6*dt;var hd=Math.pow(.15,dt);hvx*=hd;hvy*=hd;hvr*=hd;hx+=hvx*dt;hy+=hvy*dt;hrot+=hvr*dt;
+    var u=Math.min(W,H)/100;
+    var ox=(2.2*Math.sin(t*.29+1.3)+1.3*Math.sin(t*.67+.4)+.6*Math.sin(t*1.31+2.2))*u+hx;
+    var oy=(3.2*Math.sin(t*.41)+1.6*Math.sin(t*.93+2.1)+.7*Math.sin(t*1.77+.7))*u+hy;
+    var orot=2.4*Math.sin(t*.33+.8)+1.4*Math.sin(t*.81+2.6)+.5*Math.sin(t*1.9)+hrot;
+    hbEl.style.transform='translate('+ox.toFixed(1)+'px,'+oy.toFixed(1)+'px) rotate('+orot.toFixed(2)+'deg)';
+    hcx=cx+ox;hcy=cy+oy;
+    for(var i=0;i<rocks.length;i++)for(var j=i+1;j<rocks.length;j++)bounce(rocks[i],rocks[j].x,rocks[j].y,radAt(rocks[i],rocks[j].x-rocks[i].x,rocks[j].y-rocks[i].y)+radAt(rocks[j],rocks[j].x-rocks[i].x,rocks[j].y-rocks[i].y),rocks[j]);
+    rocks.forEach(function(r){
+      var sp=Math.hypot(r.vx,r.vy); // keep a lazy, steady drift
+      if(sp>60){r.vx*=60/sp;r.vy*=60/sp} if(sp<22){r.vx*=22/sp;r.vy*=22/sp}
+      draw(r,t);
+    });
+    requestAnimationFrame(step);
+  }
+  if(reduce){rocks.forEach(function(r){draw(r,0)})}else{requestAnimationFrame(step)}
+  function refit(){measure();rocks.forEach(function(r){r.x=Math.min(Math.max(r.x,X0+r.hw),X1-r.hw);r.y=Math.min(Math.max(r.y,Y0+r.hh),Y1-r.hh);if(reduce)draw(r,0)})}
+  addEventListener('resize',refit);
+  addEventListener('load',refit);
+  [].forEach.call(document.querySelectorAll('img'),function(im){if(!im.complete)im.addEventListener('load',refit)});
+  if(window.visualViewport){visualViewport.addEventListener('resize',refit);visualViewport.addEventListener('scroll',refit)}
+
+  // mail: show the address as text (mailto links are unreliable here)
+  var box=document.getElementById('mailbox'), btn=document.getElementById('copyBtn'), addr=document.getElementById('mailAddr');
+  document.getElementById('mailStone').addEventListener('click',function(){box.hidden=!box.hidden});
+  btn.addEventListener('click',function(){
+    var done=function(){btn.textContent='복사됨';setTimeout(function(){btn.textContent='복사'},1400)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(addr);var g=getSelection();g.removeAllRanges();g.addRange(r)};
+    try{navigator.clipboard.writeText(addr.textContent).then(done,sel)}catch(e){sel()}
+  });
+})();
+</script>
+
+</body>
+</html>
